@@ -1,0 +1,248 @@
+/* CustomSolution.css - Improved Version */
+
+/* Variables for consistent theming */
+:root {
+    --primary-color: #2a6ab1;
+    --secondary-color: #ecc94b;
+    --dark-text: #333;
+    --light-text: #666;
+    --white: #fff;
+    --light-bg: #f7fafc;
+    --border-radius: 8px;
+    --box-shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --box-shadow-md: 0 6px 12px rgba(0, 0, 0, 0.15);
+    --transition-speed: 0.3s;
+    --section-spacing: 50px;
+    --content-width: 1200px;
+  }
+  
+  /* Reset and General Styles */
+  .project-specific-cranes {
+    font-family: 'Roboto', Arial, sans-serif;
+    color: var(--dark-text);
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 20px;
+    line-height: 1.6;
+  }
+  
+  /* Common Section Styles */
+  .project-specific-cranes section {
+    margin-bottom: var(--section-spacing);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+  }
+  
+  .project-specific-cranes h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 30px;
+    color: black;
+    font-weight: 600;
+  }
+  
+  .project-specific-cranes h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #fbbf24;
+  }
+  
+  .project-specific-cranes p {
+    font-size: 1.1rem;
+    color: var(--light-text);
+  }
+  
+  /* Alternating Section Background Pattern */
+  .project-specific-cranes section:nth-child(odd) {
+    background-color: var(--light-bg);
+    padding: 40px 20px;
+  }
+  
+  .project-specific-cranes section:nth-child(even) {
+    background-color: var(--white);
+    padding: 40px 20px;
+  }
+  
+  /* Hero Section with enhanced styling */
+  .hero_s {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+    background-size: cover;
+    background-position: center;
+    color: var(--white);
+    padding: 80px 20px;
+    text-align: center;
+    border-radius: var(--border-radius);
+    margin-bottom: var(--section-spacing);
+    position: relative;
+  }
+  
+  .hero_s h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+  }
+  
+  .hero_s p {
+    font-size: 1.4rem;
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--white);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Card Styles with Improved Styling */
+  .modification-card,
+  .industry-card {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: #fbbf24;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .modification-card {
+    border-left: 4px solid #fbbf24;
+  }
+  
+  .industry-card {
+    border-top: 4px solid #fbbf24;
+  }
+  
+  .modification-card:hover,
+  .industry-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-md);
+  }
+  
+  /* Grid Layouts with Improved Spacing */
+  .modifications-grid,
+  .industry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin: 0 auto;
+  }
+  
+  /* Feature Lists with Enhanced Design */
+  .iot-features,
+  .lifting-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .iot-features p,
+  .lifting-features p {
+    position: relative;
+    padding: 15px 15px 15px 45px;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-sm);
+    transition: transform var(--transition-speed) ease;
+  }
+  
+  .iot-features p:hover,
+  .lifting-features p:hover {
+    transform: translateY(-3px);
+  }
+  
+  .iot-features p:before,
+  .lifting-features p:before {
+    content: "✓";
+    position: absolute;
+    left: 15px;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  /* Section-specific styles */
+  .custom-modifications {
+    position: relative;
+  }
+  
+  .safety-compliance p,
+  .payment-plans p,
+  .operator-training p,
+  .custom-fabrication p,
+  .remote-cranes p,
+  .on-site-setup p {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  /* Media Queries for Responsiveness */
+  @media (max-width: 768px) {
+    .hero_s h1 {
+      font-size: 2.2rem;
+    }
+    
+    .hero_s p {
+      font-size: 1.2rem;
+    }
+    
+    .project-specific-cranes h2 {
+      font-size: 1.8rem;
+    }
+    
+    .modifications-grid,
+    .industry-grid,
+    .iot-features,
+    .lifting-features {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .project-specific-cranes {
+      padding: 15px;
+    }
+    
+    .hero_s {
+      padding: 60px 15px;
+    }
+    
+    .hero_s h1 {
+      font-size: 1.8rem;
+    }
+    
+    .project-specific-cranes section {
+      padding: 30px 15px;
+    }
+  }
+  
+  /* Print Styles for Better Printing */
+  @media print {
+    .project-specific-cranes {
+      max-width: 100%;
+      padding: 0;
+    }
+    
+    .hero_s {
+      background: none;
+      color: var(--dark-text);
+      padding: 20px 0;
+    }
+    
+    .project-specific-cranes section {
+      page-break-inside: avoid;
+      margin-bottom: 20px;
+      padding: 15px 0;
+    }
+    
+    .modification-card,
+    .industry-card,
+    .iot-features p,
+    .lifting-features p {
+      box-shadow: none;
+      border: 1px solid #ddd;
+    }
+  }

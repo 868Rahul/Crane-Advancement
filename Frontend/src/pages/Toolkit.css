@@ -1,0 +1,56 @@
+/* Toolkit Section Styling */
+.toolkit-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 60px 0; /* Increased margin for better spacing */
+    padding: 20px;
+  }
+  
+  .toolkit-container {
+    text-align: center;
+  }
+  
+  .toolkit-button {
+    background-color: #fbbf24; /* Yellow */
+    color: black;
+    padding: 15px 30px; /* Increased padding */
+    font-size: 1.2rem; /* Larger font size */
+    font-weight: bold;
+    border-radius: 10px; /* Slightly rounded corners */
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px; /* Increased gap between icon and text */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Add pointer cursor on hover */
+  }
+  
+  .toolkit-button i {
+    font-size: 1.5rem; /* Larger icon size */
+    transition: transform 0.3s ease;
+  }
+  
+  .toolkit-button:hover {
+    background-color: #f59e0b; /* Darker yellow on hover */
+    transform: translateY(-5px); /* Move button up slightly */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  }
+  
+  .toolkit-button:hover i {
+    transform: rotate(15deg); /* Rotate icon on hover */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .toolkit-button {
+      padding: 12px 24px; /* Smaller padding for mobile */
+      font-size: 1rem; /* Smaller font size for mobile */
+    }
+  
+    .toolkit-button i {
+      font-size: 1.2rem; /* Smaller icon size for mobile */
+    }
+  }

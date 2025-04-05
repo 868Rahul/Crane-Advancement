@@ -1,0 +1,165 @@
+/* Footer Styling */
+footer {
+    background-color: #111827; /* Dark gray background */
+    color: #ffffff;
+    padding: 60px 20px; /* Increased padding for better spacing */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px; /* Added gap for better spacing */
+}
+
+/* Footer Section Styling */
+.footer-section {
+    flex: 1;
+    min-width: 250px; /* Ensures sections don't get too narrow */
+    text-align: left;
+}
+
+.footer-section h3 {
+    font-size: 1.5rem;
+    color: #fbbf24; /* Yellow color for headings */
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+.footer-section h3::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 2px;
+    background: #fbbf24; /* Yellow underline */
+    margin-top: 10px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.footer-section h3:hover {
+    color: #f59e0b; /* Darker yellow on hover */
+}
+
+.footer-section h3:hover::after {
+    width: 100%; /* Expand underline on hover */
+    background-color: #f59e0b; /* Darker yellow on hover */
+}
+
+.footer-section p {
+    font-size: 1rem;
+    color: #9ca3af; /* Light gray for text */
+    line-height: 1.6; /* Improved readability */
+    margin-bottom: 15px;
+}
+
+/* Quick Links Styling */
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 0;
+    transition: padding-left 0.3s ease;
+}
+
+.footer-section ul li a {
+    color: #9ca3af; /* Light gray for links */
+    text-decoration: none; /* Remove underline by default */
+    position: relative;
+    transition: color 0.3s ease;
+    display: inline-block;
+}
+
+.footer-section ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: #fbbf24;
+    transition: width 0.3s ease;
+}
+
+.footer-section ul li:hover {
+    padding-left: 8px; /* Indent on hover */
+}
+
+.footer-section ul li a:hover {
+    color: #fbbf24;
+}
+
+.footer-section ul li a:hover::after {
+    width: 100%; /* Expand underline on hover */
+}
+
+/* Contact Info Styling */
+.footer-section p i {
+    color: #fbbf24; /* Yellow for icons */
+    margin-right: 10px;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.footer-section p:hover i {
+    transform: translateY(-3px) rotate(5deg); /* More dynamic movement */
+    color: #f59e0b; /* Darker yellow on hover */
+}
+
+/* Enhance contact links if they exist */
+.footer-section .contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+}
+
+.footer-section .contact-item:hover {
+    transform: translateX(5px);
+}
+
+/* Footer Bottom Styling */
+footer .border-t {
+    border-top: 1px solid #374151; /* Darker gray border */
+    padding-top: 20px;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #9ca3af;
+}
+
+/* Background Decoration */
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.05) 10%, transparent 10.01%);
+    background-size: 20px 20px;
+    opacity: 0.5;
+    z-index: 0;
+    animation: moveBackground 20s linear infinite;
+}
+
+/* Keyframes for Animations */
+@keyframes moveBackground {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-200px);
+    }
+}

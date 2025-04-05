@@ -1,0 +1,159 @@
+/* Header Styling */
+header {
+    background-color: #fbbf24; /* Yellow */
+    color: white;
+    padding: 1rem 0;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+header:hover {
+    background-color: #f59e0b; /* Darker yellow on hover */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Logo Styling */
+h1.logo {
+    font-size: 2rem; /* Larger font size */
+    font-weight: bold;
+    color: #1e293b; /* Dark gray */
+    transition: color 0.3s ease;
+}
+
+h1.logo:hover {
+    color: #ffffff; /* White on hover */
+}
+
+/* Navigation Styling */
+nav ul.nav-links {
+    display: flex;
+    gap: 2rem; /* Increased gap for better spacing */
+    margin: 0;
+    padding: 0;
+}
+
+nav ul.nav-links li {
+    list-style: none;
+}
+
+nav ul.nav-links li a {
+    color: #1e293b; /* Dark gray */
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+nav ul.nav-links li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #1e293b; /* Dark gray */
+    transition: width 0.3s ease;
+}
+
+nav ul.nav-links li a:hover {
+    color: #ffffff; /* White on hover */
+    transform: translateY(-2px);
+}
+
+nav ul.nav-links li a:hover::after {
+    width: 100%; /* Expand underline on hover */
+}
+
+/* Sign In Button Styling */
+.signin {
+    display: flex;
+    align-items: center;
+}
+
+.signin-btn {
+    background-color: black; /* Dark gray */
+    color: white;
+    padding: 0.75rem 1.5rem; /* Increased padding */
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.signin-btn:hover {
+    background-color: #374151; /* Darker gray */
+}
+
+
+.logo-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-logo {
+    height: 40px; /* Adjust the size as needed */
+    margin-right: 10px;
+  }
+
+/* Responsive Design for Tablets and Phones */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    nav ul.nav-links {
+        gap: 1rem;
+    }
+
+    h1.logo {
+        font-size: 1.75rem;
+    }
+
+    .signin-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 0.5rem 0;
+    }
+
+    .container {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+
+    nav ul.nav-links {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    .signin {
+        margin-top: 1rem;
+    }
+
+    h1.logo {
+        font-size: 1.5rem;
+    }
+
+    .signin-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}

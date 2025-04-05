@@ -1,0 +1,443 @@
+/* ToolkitPage.css - App Mode */
+
+/* Global App Container */
+.parent {
+  display: grid;
+  grid-template-areas: 
+    "header header"
+    "main sidebar";
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 3fr 1fr;
+  grid-gap: 5px;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* Header/Navigation Bar */
+.div3 {
+  grid-area: header;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.div3 button {
+  color: black;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+.div3 button:active {
+  background-color: rgba(255, 255, 255, 1);
+  transform: scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* Main Content Area - Crane Image */
+.div1 {
+  grid-area: main;
+  background: linear-gradient(135deg, #e0e0e0, #d1d1d1);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  position: relative; /* For absolute positioning of overlay elements */
+}
+
+.div1 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Sidebar/Control Panel */
+.div2 {
+  grid-area: sidebar;
+  position: relative;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background: linear-gradient(135deg, #ffffff, #f5f5f5);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Toggle Button */
+.toggle-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.toggle-button:active {
+  transform: scale(0.95);
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Hidden Content Panel */
+.hidden-content {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 60px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 95%;
+  max-height: 80vh; /* Limit height */
+  overflow-y: auto; /* Allow scrolling if needed */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Menu Styling */
+.main-menu, .submenu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.main-menu button, .submenu button, .hidden-content button {
+  color: black;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  width: 100%;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+.main-menu button:active, .submenu button:active, .hidden-content button:active {
+  background-color: rgba(255, 255, 255, 1);
+  transform: scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.submenu-header {
+  margin-bottom: 10px;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #333;
+}
+
+.back-button:active {
+  color: #000;
+  transform: translateX(-2px);
+}
+
+/* Camera Grid */
+.camera-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  gap: 8px; /* Reduced gap for more space */
+  width: 100%;
+}
+
+.camera-box {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.camera-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.camera-toggle-btn {
+  padding: 4px 8px !important;
+  height: auto !important;
+  font-size: 12px !important;
+  background-color: #e74c3c;
+  color: white !important;
+  border-radius: 4px;
+  border: none !important;
+  width: auto !important;
+}
+
+.camera-toggle-btn:active {
+  background-color: #c0392b;
+}
+
+.camera-box.active .camera-toggle-btn {
+  background-color: #27ae60;
+}
+
+.camera-box.active .camera-toggle-btn:active {
+  background-color: #2ecc71;
+}
+
+.camera-feed {
+  height: 120px; /* Reduced height to fit more cameras */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #000;
+}
+
+.camera-feed video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-placeholder {
+  color: #95a5a6;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .parent {
+    grid-template-areas: 
+      "header header"
+      "main main";
+    grid-template-columns: 1fr;
+  }
+  
+  .div2 {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: auto;
+    height: auto;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+  }
+  
+  .hidden-content {
+    position: fixed;
+    width: 90%;
+    max-width: 320px;
+    bottom: 80px;
+    right: 10px;
+    margin-top: 0;
+  }
+  
+  .div3 {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .div3 button {
+    flex: 1 1 auto;
+    min-width: 80px;
+    padding: 10px;
+  }
+}
+
+/* For tablets or mid-sized screens */
+@media (max-width: 1024px) {
+  .parent {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+/* Touch Optimizations */
+button, .toggle-button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* iOS-specific appearance fixes */
+input, button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Overlay Toggle Button */
+.overlay-toggle-button {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b); /* Gradient background */
+  border: none;
+  border-radius: 50%; /* Circular shape */
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  color: #333; /* Icon color */
+  transition: all 0.3s ease; /* Smooth transitions */
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 100; /* Ensure it appears above other elements */
+}
+
+.overlay-toggle-button:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Larger shadow on hover */
+  transform: scale(1.05); /* Slight scale-up effect */
+}
+
+.overlay-toggle-button:active {
+  transform: scale(0.95); /* Slight scale-down effect on click */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Smaller shadow on click */
+}
+
+/* Overlay Options (A, B, C, D buttons) */
+.overlay-options {
+  position: absolute;
+  top: 50px; /* Position below the toggle button */
+  left: 0;
+  margin-top: 20px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b); /* Gradient background */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Spacing between buttons */
+  min-width: 120px; /* Minimum width for the overlay */
+  z-index: 99; /* Ensure it appears below the toggle button */
+  animation: fadeIn 0.3s ease; /* Fade-in animation */
+}
+
+.overlay-options button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease; /* Smooth transitions */
+  text-align: center;
+  color: #333; /* Text color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.overlay-options button:hover {
+  background-color: rgba(255, 255, 255, 1); /* Solid white on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Larger shadow on hover */
+}
+
+.overlay-options button:active {
+  transform: translateY(0); /* Reset lift effect on click */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Smaller shadow on click */
+}
+
+
+/* Bluetooth Dropdown Styles */
+.bluetooth-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.bluetooth-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.bluetooth-toggle:hover {
+  background: #e0e0e0;
+}
+
+.bluetooth-toggle.active {
+  background: #4CAF50;
+  color: white;
+}
+
+.bluetooth-dropdown-content {
+  position: absolute;
+  top: 100%;
+  width: 350px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 100;
+  padding: 15px;
+  margin-top: 20px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .bluetooth-dropdown {
+    position: static;
+  }
+  
+  .bluetooth-dropdown-content {
+    width: calc(100% - 30px);
+    left: 15px;
+    right: 15px;
+  }
+}
+
+/* Ensure dropdown stays on top of other elements */
+.div3 {
+  position: relative;
+  z-index: 10;
+}

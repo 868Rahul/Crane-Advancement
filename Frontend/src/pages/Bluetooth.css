@@ -1,0 +1,87 @@
+/* Bluetooth Controls */
+.bluetooth-controls {
+padding: 20px;
+background-color:rgb(112, 156, 200);
+border-radius: 8px;
+box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.connection-status {
+margin: 15px 0;
+font-size: 16px;
+}
+
+.connection-status span {
+font-weight: bold;
+}
+
+.connection-status .connected {
+color: #28a745;
+}
+
+.connection-status .disconnected {
+color: #dc3545;
+}
+
+.connect-btn {
+background-color: #007bff;
+color: white;
+border: none;
+padding: 10px 15px;
+border-radius: 4px;
+cursor: pointer;
+margin-bottom: 15px;
+width: 100%;
+}
+
+.connect-btn:hover {
+background-color: #0069d9;
+}
+
+.connect-btn:disabled {
+background-color: #6c757d;
+cursor: not-allowed;
+}
+
+.command-input {
+display: flex;
+gap: 10px;
+margin-bottom: 15px;
+}
+
+.command-input input {
+flex: 1;
+padding: 10px;
+border: 1px solid #ced4da;
+border-radius: 4px;
+}
+
+.command-input button {
+background-color: #28a745;
+color: white;
+border: none;
+padding: 10px 15px;
+border-radius: 4px;
+cursor: pointer;
+}
+
+.command-input button:hover {
+background-color: #218838;
+}
+
+.command-input button:disabled {
+background-color: #6c757d;
+cursor: not-allowed;
+}
+
+.command-examples {
+background-color: #e9ecef;
+padding: 10px;
+border-radius: 4px;
+font-size: 14px;
+}
+
+.command-examples ul {
+margin: 5px 0 0 20px;
+padding: 0;
+}

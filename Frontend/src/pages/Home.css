@@ -1,0 +1,117 @@
+/* /* Home Section Styling */
+#home {
+    position: relative;
+    overflow: hidden;
+    /* Add a background image in below path */
+    /* background-image: url('path/to/your/image.jpg');  */
+    background-size: cover;
+    background-position: center;
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#home::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Darker overlay for better contrast */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    max-width: 800px;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    border-radius: 15px;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+#home h2 {
+    font-size: 3rem; /* Larger font size */
+    font-weight: bold;
+    margin-bottom: 20px;
+    animation: fadeInDown 1s ease-in-out;
+}
+
+#home p {
+    font-size: 1.5rem; /* Larger font size */
+    margin-top: 10px;
+    animation: fadeInUp 1s ease-in-out;
+}
+
+.explore-btn {
+    display: inline-block;
+    margin-top: 25px;
+    background-color: #fbbf24; /* Yellow */
+    color: black;
+    padding: 15px 30px; /* Increased padding */
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.explore-btn:hover {
+    background-color: #f59e0b; /* Darker yellow on hover */
+    transform: translateY(-5px); /* Move button up slightly */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+/* Keyframes for Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate Y(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate Y(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #home h2 {
+        font-size: 2rem; /* Smaller font size for mobile */
+    }
+
+    #home p {
+        font-size: 1.2rem; /* Smaller font size for mobile */
+    }
+
+    .explore-btn {
+        padding: 10px 20px; /* Smaller padding for mobile */
+        font-size: 1rem;
+    }
+}
