@@ -14,7 +14,7 @@ function BluetoothControls() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:5000/api/bluetooth/send', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/bluetooth/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
