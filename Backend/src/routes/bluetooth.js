@@ -12,7 +12,7 @@ router.get('/connect', async (req, res) => {
     const hc05Port = ports.find(p => 
       (p.manufacturer && p.manufacturer.toLowerCase().includes('microsoft')) ||
       (p.friendlyName && p.friendlyName.toLowerCase().includes('bluetooth')) ||
-      p.path.includes('COM4') // Use COM4 as per your working configuration
+      p.path.includes('COM8') // Use COM8 as per your working configuration
     );
 
     if (!hc05Port) {
