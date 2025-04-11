@@ -304,9 +304,30 @@ function ToolkitPage() {
         return (
           <>
             <div className="numeric-controls">
-              {['A', 'B', 'C', 'D'].map(num => (
-                <button key={num} className="control-button">Numeric {num}</button>
-              ))}
+              <div>
+                <label>Up:</label>
+                <input type="number" placeholder="0" /> units
+              </div>
+              <div>
+                <label>Down:</label>
+                <input type="number" placeholder="0" /> units
+              </div>
+              <div>
+                <label>Left:</label>
+                <input type="number" placeholder="0" /> units
+              </div>
+              <div>
+                <label>Right:</label>
+                <input type="number" placeholder="0" /> units
+              </div>
+              <div>
+                <label>Clockwise:</label>
+                <input type="number" placeholder="0" /> units
+              </div>
+              <div>
+                <label>Anticlockwise:</label>
+                <input type="number" placeholder="0" /> units
+              </div>
             </div>
             {renderCameraGrid()}
           </>
@@ -363,6 +384,8 @@ function ToolkitPage() {
           className="menu-button"
         >
           {menu === 'camera' ? 'All Camera View' : 
+           menu === 'remote' ? 'Remote Control' : 
+           menu === 'numeric' ? 'Numeric Control' : 
            menu.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
         </button>
       ))}

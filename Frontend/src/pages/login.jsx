@@ -6,39 +6,64 @@ import './Auth.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your login logic here
-    console.log('Login form submitted:', formData);
+    setLoading(true);
+    setError(null);
 
-    // Set the user as logged in (this will be detected by Header component)
-    localStorage.setItem('userLoggedIn', 'true');
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
-    // Simulate a successful login
-    toast.success('Login successful!', {
-      position: 'top-right',
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeButton: false,
-      pauseOnHover: true,
-      draggable: true,
-    });
+      const data = await response.json();
 
-    // Dispatch a custom event to notify other components of login
-    const loginEvent = new Event('userLoggedIn');
-    window.dispatchEvent(loginEvent);
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
 
-    // Redirect to home after login
-    setTimeout(() => {
-      navigate('/');
-    }, 2000);
+      // Store the authentication token or user data
+      localStorage.setItem('authToken', data.token);
+      localStorage.setItem('userLoggedIn', 'true');
+      localStorage.setItem('userData', JSON.stringify(data.user));
+
+      toast.success('Login successful!', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeButton: false,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+      // Dispatch a custom event to notify other components of login
+      const loginEvent = new Event('userLoggedIn');
+      window.dispatchEvent(loginEvent);
+
+      // Redirect to home after login
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+
+    } catch (err) {
+      console.error('Login error:', err.message);
+      setError(err.message);
+      toast.error(err.message || 'Login failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="auth-container">
       <h2>Login</h2>
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="email"
@@ -54,7 +79,9 @@ const Login = () => {
           onChange={(e) => setFormData({ ...formData, password: e.target.value })}
           required
         />
-        <button type="submit">Log In</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Logging In...' : 'Log In'}
+        </button>
       </form>
       <p>
         Don't have an account? <button onClick={() => navigate('/signin')}>Sign Up</button>

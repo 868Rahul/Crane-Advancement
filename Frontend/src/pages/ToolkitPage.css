@@ -101,7 +101,9 @@
 .div2-background-content {
   height: 100%;
   width: 100%;
+  overflow-y: auto;
   transition: filter 0.3s ease;
+  padding: 60px 16px 16px;
   box-sizing: border-box;
 }
 
@@ -177,7 +179,7 @@
 .menu-button:hover {
   background-color: #e0e0e0;
   transform: translateX(5px);
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
 }
 
 /* Back to Menu Button */
@@ -321,10 +323,12 @@
 /* Control Buttons */
 .remote-controls,
 .numeric-controls {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  width: 100%;
 }
 
 .control-button {
@@ -520,85 +524,6 @@
   overflow-y: auto;
 }
 
-/* Remote Controls */
-.remote-controls {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  padding: 15px;
-  width: 100%;
-  overflow-y: hidden; /* Remove scrollbar for remote section */
-}
-
-.arrow-controls {
-  display: flex;
-  flex-direction: column;
-  margin-top: 20%;
-  align-items: center;
-  gap: 10px;
-}
-
-.horizontal-arrows {
-  display: flex;
-  gap: 80px;
-}
-
-.arrow-button {
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background-color: #f8ae17;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.arrow-button:hover {
-  background-color: #34495e;
-  transform: scale(1.05);
-}
-
-.arrow-button:active {
-  transform: scale(0.95);
-}
-
-.rotation-controls {
-  gap: 15px;
-  margin-top: 20%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.rotation-button {
-  padding: 10px 15px;
-  border-radius: 8px;
-  background-color: #3498db;
-  color: white;
-  margin-top: 10%;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s ease;
-  font-size: 14px; /* Ensure readability */
-}
-
-.rotation-button:hover {
-  background-color: #2980b9;
-  transform: scale(1.02);
-}
-
-.rotation-button:active {
-  transform: scale(0.98);
-}
-
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   .parent {
@@ -670,52 +595,12 @@
   .overlay-content p {
     margin-left: 0;
   }
-
-  .arrow-button {
-    width: 40px;
-    height: 40px;
-    font-size: 12px; /* Smaller text for mobile */
-  }
-
-  .rotation-button {
-    padding: 8px 12px;
-    font-size: 12px; /* Smaller text for mobile */
-  }
-
-  .remote-controls {
-    padding: 10px;
-    gap: 15px;
-  }
-
-  .horizontal-arrows {
-    gap: 40px; /* Reduced gap for mobile */
-  }
 }
 
-/* For Tablets or Mid-Sized Screens */
-@media (max-width: 1024px) and (min-width: 769px) {
+/* For tablets or mid-sized screens */
+@media (max-width: 1024px) {
   .parent {
     grid-template-columns: 2fr 1fr;
-  }
-
-  .arrow-button {
-    width: 50px;
-    height: 50px;
-    font-size: 14px; /* Adjusted for tablets */
-  }
-
-  .rotation-button {
-    padding: 10px 14px;
-    font-size: 14px; /* Adjusted for tablets */
-  }
-
-  .remote-controls {
-    padding: 12px;
-    gap: 18px;
-  }
-
-  .horizontal-arrows {
-    gap: 60px; /* Adjusted for tablets */
   }
 }
 
@@ -743,4 +628,114 @@ button,
 ::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.231);
   border-radius: 3px;
+}
+
+/* Add these styles to your existing ToolkitPage.css */
+
+.remote-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 15px;
+  width: 100%;
+}
+
+.arrow-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.horizontal-arrows {
+  display: flex;
+  gap: 80px;
+}
+
+.arrow-button {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #f8ae17;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.arrow-button:hover {
+  background-color: #34495e;
+  transform: scale(1.05);
+}
+
+.arrow-button:active {
+  transform: scale(0.95);
+}
+
+.rotation-controls {
+  gap: 15px;
+  margin-top: 20%;
+}
+
+.rotation-button {
+  padding: 10px 15px;
+  border-radius: 8px;
+  background-color: #3498db;
+  color: white;
+  margin-top: 10%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.rotation-button:hover {
+  background-color: #2980b9;
+  transform: scale(1.02);
+}
+
+.rotation-button:active {
+  transform: scale(0.98);
+}
+
+/* Numeric Controls */
+.numeric-controls div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.numeric-controls label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  min-width: 80px; /* Ensure label has consistent width */
+}
+
+.numeric-controls input {
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.numeric-controls span {
+  font-size: 14px;
+  color: #666;
+  margin-left: 5px;
 }
