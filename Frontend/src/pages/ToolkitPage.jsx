@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ToolkitPage.css';
-import { Menu, X, CornerUpLeft, ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
+import { Menu, X, CornerUpLeft, ChevronLeft, ChevronDown, ChevronUp, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, RotateCw, RotateCcw } from 'lucide-react';
 import craneImage from '../assets/Crane.jpg';
 import { useNavigate } from 'react-router-dom';
 import BluetoothControls from './BluetoothControl.jsx';
@@ -272,9 +272,30 @@ function ToolkitPage() {
         return (
           <>
             <div className="remote-controls">
-              {['A', 'B', 'C', 'D'].map(remote => (
-                <button key={remote} className="control-button">Remote {remote}</button>
-              ))}
+              <div className="arrow-controls">
+                <button className="control-button arrow-button">
+                  <ArrowUp size={24} />
+                </button>
+                <div className="horizontal-arrows">
+                  <button className="control-button arrow-button">
+                    <ArrowLeft size={24} />
+                  </button>
+                  <button className="control-button arrow-button">
+                    <ArrowRight size={24} />
+                  </button>
+                </div>
+                <button className="control-button arrow-button">
+                  <ArrowDown size={24} />
+                </button>
+              </div>
+              <div className="rotation-controls">
+                <button className="control-button rotation-button">
+                  <RotateCcw size={24} /> Anticlockwise
+                </button>
+                <button className="control-button rotation-button">
+                  <RotateCw size={24} /> Clockwise
+                </button>
+              </div>
             </div>
             {renderCameraGrid()}
           </>
