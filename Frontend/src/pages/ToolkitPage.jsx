@@ -8,15 +8,28 @@ import BluetoothControls from './BluetoothControl.jsx';
 function ToolkitPage() {
   const [showContent, setShowContent] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState(null);
-  const [activeCameras, setActiveCameras] = useState({
-    A: false,
-    B: false,
-    C: false,
-    D: false
-  });
+  const [expandedButton, setExpandedButton] = useState(null);
   const [showOverlayOptions, setShowOverlayOptions] = useState(false);
-  const [selectedOverlayOption, setSelectedOverlayOption] = useState(null);
+  const [selectedOverlayOption, setSelectedOverlayOption] = useState('A');
   const [showBluetoothDropdown, setShowBluetoothDropdown] = useState(false);
+  const [hideToggleButton, setHideToggleButton] = useState(false);
+  const [cameraStreams, setCameraStreams] = useState({
+    A: null,
+    B: null,
+    C: null,
+    D: null,
+    E: null,
+    F: null,
+  });
+  const [div2Content, setDiv2Content] = useState('camera');
+  const [showAllOptions, setShowAllOptions] = useState(true);
+  const [selectedCamera, setSelectedCamera] = useState(null);
+  const [showMainMenu, setShowMainMenu] = useState(false);
+  const [showInDiv1, setShowInDiv1] = useState(null);
+  const [cameraVisibility, setCameraVisibility] = useState(true);
+  const [isBluetoothConnected, setIsBluetoothConnected] = useState(false);
+  const [force, setForce] = useState('Force: ...');
+  const [wind, setWind] = useState('Wind: ...');
 
   // Refs for video elements
   const cameraRefs = {
@@ -24,78 +37,108 @@ function ToolkitPage() {
     B: useRef(null),
     C: useRef(null),
     D: useRef(null),
+    E: useRef(null),
+    F: useRef(null),
+  };
+
+  const fullViewRefs = {
+    A: useRef(null),
+    B: useRef(null),
+    C: useRef(null),
+    D: useRef(null),
+    E: useRef(null),
+    F: useRef(null),
   };
 
   const navigate = useNavigate();
 
-  // Toggle camera feeds
-  const toggleCamera = (camera) => {
-    if (activeCameras[camera] && cameraRefs[camera].current?.srcObject) {
-      const stream = cameraRefs[camera].current.srcObject;
-      stream.getTracks().forEach(track => track.stop());
-      cameraRefs[camera].current.srcObject = null;
-    }
-
-    setActiveCameras(prev => ({
-      ...prev,
-      [camera]: !prev[camera]
-    }));
+  const initializeMockStreams = () => {
+    return {
+      A: new MediaStream(),
+      B: new MediaStream(),
+      C: null,
+      D: null,
+      E: null,
+      F: null,
+    };
   };
 
-  // Handle webcam access
   useEffect(() => {
-    const startCamera = async (camera) => {
-      if (activeCameras[camera] && cameraRefs[camera].current) {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: { width: 320, height: 240 }
-          });
-
-          if (cameraRefs[camera].current && activeCameras[camera]) {
-            cameraRefs[camera].current.srcObject = stream;
-          } else {
-            stream.getTracks().forEach(track => track.stop());
-          }
-        } catch (err) {
-          console.error(`Error accessing camera ${camera}:`, err);
-        }
+    const fetchData = () => {
+      if (isBluetoothConnected) {
+        setForce(`Force: ${Math.random() * 1000} N`);
+        setWind(`Wind: ${Math.random() * 50} km/h`);
+      } else {
+        setForce('Force : ...');
+        setWind('Wind : ...');
       }
     };
 
-    Object.keys(activeCameras).forEach(camera => {
-      if (activeCameras[camera]) startCamera(camera);
-    });
+    const interval = setInterval(fetchData, 2000);
+    fetchData();
+    return () => clearInterval(interval);
+  }, [isBluetoothConnected]);
+
+  useEffect(() => {
+    const initializeCameras = async () => {
+      try {
+        const streams = initializeMockStreams();
+        for (const camera of ['A', 'B']) {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+              video: { width: 320, height: 240 }
+            });
+            streams[camera] = stream;
+          } catch (err) {
+            console.error(`Error initializing camera ${camera}:`, err);
+            streams[camera] = new MediaStream();
+          }
+        }
+        setCameraStreams(streams);
+      } catch (err) {
+        console.error('Error initializing cameras:', err);
+        setCameraStreams(initializeMockStreams());
+      }
+    };
+
+    initializeCameras();
 
     return () => {
-      Object.keys(cameraRefs).forEach(camera => {
-        if (cameraRefs[camera].current?.srcObject) {
-          const stream = cameraRefs[camera].current.srcObject;
+      Object.values(cameraStreams).forEach(stream => {
+        if (stream?.getTracks) {
           stream.getTracks().forEach(track => track.stop());
-          cameraRefs[camera].current.srcObject = null;
         }
       });
     };
-  }, [activeCameras]);
+  }, []);
 
-  const toggleContent = () => {
-    if (showContent) {
+  useEffect(() => {
+    if (cameraVisibility && div2Content === 'camera') {
       Object.keys(cameraRefs).forEach(camera => {
-        if (cameraRefs[camera].current?.srcObject) {
-          const stream = cameraRefs[camera].current.srcObject;
-          stream.getTracks().forEach(track => track.stop());
-          cameraRefs[camera].current.srcObject = null;
+        const videoElement = cameraRefs[camera].current;
+        if (videoElement && cameraStreams[camera] && !videoElement.srcObject) {
+          videoElement.srcObject = cameraStreams[camera];
+          videoElement.play().catch(err => console.error(`Error playing ${camera}:`, err));
         }
       });
-
-      setActiveCameras({
-        A: false,
-        B: false,
-        C: false,
-        D: false
-      });
-      setActiveSubmenu(null);
     }
-    setShowContent(!showContent);
+
+    if (showInDiv1) {
+      const videoElement = fullViewRefs[showInDiv1].current;
+      if (videoElement && cameraStreams[showInDiv1] && !videoElement.srcObject) {
+        videoElement.srcObject = cameraStreams[showInDiv1];
+        videoElement.play().catch(err => console.error(`Error playing full view ${showInDiv1}:`, err));
+      }
+    }
+  }, [cameraStreams, cameraVisibility, div2Content, showInDiv1]);
+
+  const toggleContent = () => {
+    setShowMainMenu(!showMainMenu);
+    if (showMainMenu) {
+      setDiv2Content('camera');
+      setExpandedButton(null);
+      setCameraVisibility(true);
+    }
   };
 
   const toggleOverlayOptions = () => {
@@ -104,6 +147,7 @@ function ToolkitPage() {
 
   const handleOptionClick = (option) => {
     setSelectedOverlayOption(option);
+    setShowInDiv1(null);
     setShowOverlayOptions(false);
   };
 
@@ -111,147 +155,214 @@ function ToolkitPage() {
     navigate('/');
   };
 
-  const openSubmenu = (menuName) => {
-    setActiveSubmenu(menuName);
+  const showCameraInDiv1 = (camera, e) => {
+    if (e) e.stopPropagation();
+    setShowInDiv1(camera);
+    setSelectedOverlayOption('B');
+    setTimeout(() => {
+      const videoElement = fullViewRefs[camera].current;
+      if (videoElement && cameraStreams[camera] && !videoElement.srcObject) {
+        videoElement.srcObject = cameraStreams[camera];
+        videoElement.play().catch(err => console.error(`Error playing full view ${camera}:`, err));
+      }
+    }, 0);
+  };
+
+  const toggleButtonDropdown = (menuName) => {
+    if (expandedButton === menuName) {
+      setExpandedButton(null);
+      setDiv2Content('camera');
+      setShowAllOptions(true);
+      setShowMainMenu(false);
+      setCameraVisibility(true);
+    } else {
+      setExpandedButton(menuName);
+      setDiv2Content(menuName);
+      setShowMainMenu(false);
+      setShowAllOptions(false);
+      setCameraVisibility(menuName === 'camera');
+    }
   };
 
   const goBackToMainMenu = () => {
-    Object.keys(cameraRefs).forEach(camera => {
-      if (cameraRefs[camera].current?.srcObject) {
-        const stream = cameraRefs[camera].current.srcObject;
-        stream.getTracks().forEach(track => track.stop());
-        cameraRefs[camera].current.srcObject = null;
-      }
-    });
-
-    setActiveCameras({
-      A: false,
-      B: false,
-      C: false,
-      D: false
-    });
     setActiveSubmenu(null);
+    setExpandedButton(null);
+    setShowAllOptions(true);
+    setShowMainMenu(true);
+    setCameraVisibility(false);
   };
 
   const toggleBluetoothDropdown = () => {
     setShowBluetoothDropdown(!showBluetoothDropdown);
+    setHideToggleButton(!showBluetoothDropdown);
   };
 
-  // Close dropdown when clicking outside
+  const handleBluetoothConnection = (isConnected) => {
+    setIsBluetoothConnected(isConnected);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
+      if (event.target.closest('.div2')) return;
       if (showBluetoothDropdown && !event.target.closest('.bluetooth-dropdown')) {
         setShowBluetoothDropdown(false);
+        setHideToggleButton(false);
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showBluetoothDropdown]);
 
-  // Camera view component
-  const CameraView = ({ camera }) => {
+  const CameraView = ({ camera, fullView = false }) => {
+    const ref = fullView ? fullViewRefs[camera] : cameraRefs[camera];
+
+    useEffect(() => {
+      const videoElement = ref.current;
+      if (videoElement && cameraStreams[camera] && !videoElement.srcObject) {
+        videoElement.srcObject = cameraStreams[camera];
+        videoElement.play().catch(err => console.error(`Error playing ${camera}:`, err));
+      }
+    }, [cameraStreams[camera]]);
+
     return (
-      <div className={`camera-box ${activeCameras[camera] ? 'active' : ''}`}>
+      <div className={`camera-box ${fullView ? 'full-view' : ''}`}>
         <div className="camera-header">
           <span>Cam {camera}</span>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleCamera(camera);
-            }}
-            className="camera-toggle-btn"
-          >
-            {activeCameras[camera] ? 'Turn Off' : 'Turn On'}
-          </button>
         </div>
         <div className="camera-feed">
-          {activeCameras[camera] ? (
-            <video ref={cameraRefs[camera]} autoPlay playsInline muted />
+          {cameraStreams[camera] ? (
+            <video ref={ref} autoPlay playsInline muted />
           ) : (
-            <div className="camera-placeholder">Cam {camera} inactive</div>
+            <div className="camera-placeholder">Cam {camera} not connected</div>
           )}
         </div>
       </div>
     );
   };
 
-  // Render submenu
-  const renderSubMenu = () => {
-    switch (activeSubmenu) {
+  const CameraButton = ({ camera }) => {
+    return (
+      <button 
+        onClick={(e) => showCameraInDiv1(camera, e)} 
+        className={`camera-button ${showInDiv1 === camera ? 'active' : ''}`}
+      >
+        Cam {camera}
+      </button>
+    );
+  };
+
+  const renderDiv2Content = () => {
+    const renderCameraGrid = () => (
+      <div className="camera-grid" style={{ display: cameraVisibility ? 'grid' : 'none' }}>
+        {['A', 'B', 'C', 'D', 'E', 'F'].map(cam => (
+          <CameraView key={cam} camera={cam} />
+        ))}
+      </div>
+    );
+
+    switch (div2Content) {
       case 'camera':
         return (
-          <div className="submenu">
-            <div className="submenu-header">
-              <button onClick={goBackToMainMenu} className="back-button">
-                <ChevronLeft size={20} /> All Camera Views
-              </button>
-            </div>
-            <div className="camera-grid">
-              <CameraView camera="A" />
-              <CameraView camera="B" />
-              <CameraView camera="C" />
-              <CameraView camera="D" />
-            </div>
-          </div>
+          <>
+            {renderCameraGrid()}
+          </>
         );
       case 'remote':
         return (
-          <div className="submenu">
-            <div className="submenu-header">
-              <button onClick={goBackToMainMenu} className="back-button">
-                <ChevronLeft size={20} /> Remote Controls
-              </button>
+          <>
+            <div className="remote-controls">
+              {['A', 'B', 'C', 'D'].map(remote => (
+                <button key={remote} className="control-button">Remote {remote}</button>
+              ))}
             </div>
-            <button>Remote A</button>
-            <button>Remote B</button>
-            <button>Remote C</button>
-            <button>Remote D</button>
-          </div>
+            {renderCameraGrid()}
+          </>
         );
       case 'numeric':
         return (
-          <div className="submenu">
-            <div className="submenu-header">
-              <button onClick={goBackToMainMenu} className="back-button">
-                <ChevronLeft size={20} /> Numeric Controls
-              </button>
+          <>
+            <div className="numeric-controls">
+              {['A', 'B', 'C', 'D'].map(num => (
+                <button key={num} className="control-button">Numeric {num}</button>
+              ))}
             </div>
-            <button>Numeric A</button>
-            <button>Numeric B</button>
-            <button>Numeric C</button>
-            <button>Numeric D</button>
-          </div>
+            {renderCameraGrid()}
+          </>
         );
       case 'bluetooth':
         return (
-          <div className="submenu">
-            <div className="submenu-header">
-              <button onClick={goBackToMainMenu} className="back-button">
-                <ChevronLeft size={20} /> Bluetooth Controls
-              </button>
+          <>
+            <BluetoothControls onConnectionChange={handleBluetoothConnection} />
+            {renderCameraGrid()}
+          </>
+        );
+      case 'operation-logs':
+        return (
+          <>
+            <div className="logs-content">
+              {['Operation started', 'Position changed', 'Operation completed'].map((log, i) => (
+                <p key={i}>Log entry {i+1}: {log}</p>
+              ))}
             </div>
-            <BluetoothControls />
-          </div>
+            {renderCameraGrid()}
+          </>
+        );
+      case 'alert-logs':
+        return (
+          <>
+            <div className="logs-content">
+              {['Wind speed high', 'Battery low', 'System update required'].map((alert, i) => (
+                <p key={i} className="alert-item">{i === 0 ? 'Warning' : i === 1 ? 'Notice' : 'Alert'}: {alert}</p>
+              ))}
+            </div>
+            {renderCameraGrid()}
+          </>
         );
       default:
         return (
-          <div className="main-menu">
-            <button onClick={() => openSubmenu('camera')}>All Camera views</button>
-            <button onClick={() => openSubmenu('remote')}>Remote Controls</button>
-            <button onClick={() => openSubmenu('numeric')}>Numeric Controls</button>
-            <button onClick={() => openSubmenu('bluetooth')}>Bluetooth Controls</button>
-            <button>Operation logs</button>
-            <button>Alert Logs</button>
-          </div>
+          <>
+            <div className="camera-buttons-grid">
+              {['A', 'B', 'C', 'D', 'E', 'F'].map(cam => (
+                <CameraButton key={cam} camera={cam} />
+              ))}
+            </div>
+            {renderCameraGrid()}
+          </>
         );
     }
   };
 
-  // Render overlay content
+  const renderMainMenu = () => (
+    <div className="main-menu">
+      {['camera', 'remote', 'numeric', 'operation-logs', 'alert-logs'].map((menu, i) => (
+        <button 
+          key={i}
+          onClick={() => toggleButtonDropdown(menu)} 
+          className="menu-button"
+        >
+          {menu === 'camera' ? 'All Camera View' : 
+           menu.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+        </button>
+      ))}
+    </div>
+  );
+
   const renderOverlayContent = () => {
+    if (showInDiv1) {
+      return (
+        <div className="overlay-content full-camera-view">
+          <div className="full-camera-header">
+            <h3>Camera {showInDiv1} Full View</h3>
+            <button onClick={() => setShowInDiv1(null)} className="back-button">
+              <ChevronLeft size={20} /> Back
+            </button>
+          </div>
+          <CameraView camera={showInDiv1} fullView={true} />
+        </div>
+      );
+    }
+
     switch (selectedOverlayOption) {
       case 'A':
         return (
@@ -263,9 +374,18 @@ function ToolkitPage() {
       case 'B':
         return (
           <div className="overlay-content">
-            <h3>Single Camera View</h3>
-            <div className="single-camera-view">
-              <CameraView camera="A" />
+            <h3>Camera Views</h3>
+            <p>Click on a camera button to view it in full screen</p>
+            <div className="camera-buttons-row">
+              {['A', 'B', 'C', 'D', 'E', 'F'].map(cam => (
+                <button 
+                  key={cam}
+                  onClick={() => setShowInDiv1(cam)} 
+                  className="camera-select-button"
+                >
+                  Cam {cam}
+                </button>
+              ))}
             </div>
           </div>
         );
@@ -294,38 +414,37 @@ function ToolkitPage() {
 
   return (
     <div className="parent">
-      {/* Header/Navbar */}
       <div className="div3">
         <button onClick={goToHome} className="back-button">
           <CornerUpLeft size={20} />
         </button>
-        <button>Force</button>
-        <button>Wind</button>
+        <button>{force}</button>
+        <button>{wind}</button>
         <button>Motor</button>
         
-        {/* Bluetooth Dropdown */}
         <div className="bluetooth-dropdown">
           <button 
             onClick={toggleBluetoothDropdown}
             className={`bluetooth-toggle ${showBluetoothDropdown ? 'active' : ''}`}
           >
-            Bluetooth Controls
+            <span className="connection-indicator" style={{ 
+              backgroundColor: isBluetoothConnected ? '#4CAF50' : '#f44336' 
+            }} />
+            Connect to Model 
             {showBluetoothDropdown ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
           
           {showBluetoothDropdown && (
             <div className="bluetooth-dropdown-content">
-              <BluetoothControls />
+              <BluetoothControls onConnectionChange={handleBluetoothConnection} />
             </div>
           )}
         </div>
       </div>
 
-      {/* Main Content Area */}
       <div className="div1">
         {renderOverlayContent()}
         
-        {/* Overlay Menu Button */}
         <div className="overlay-menu">
           <button onClick={toggleOverlayOptions} className="overlay-toggle-button">
             {showOverlayOptions ? <X size={20} /> : <Menu size={20} />}
@@ -333,26 +452,38 @@ function ToolkitPage() {
           
           {showOverlayOptions && (
             <div className="overlay-options">
-              <button onClick={() => handleOptionClick('A')}>3D View</button>
-              <button onClick={() => handleOptionClick('B')}>Single Camera View</button>
-              <button onClick={() => handleOptionClick('C')}>Jib Analysis</button>
-              <button onClick={() => handleOptionClick('D')}>Object Data and properties</button>
+              {['A', 'B', 'C', 'D'].map((option, i) => (
+                <button 
+                  key={i}
+                  onClick={() => handleOptionClick(option)}
+                >
+                  {option === 'A' ? '3D View' : 
+                   option === 'B' ? 'Camera Views' : 
+                   option === 'C' ? 'Jib Analysis' : 
+                   'Object Data and properties'}
+                </button>
+              ))}
             </div>
           )}
         </div>
       </div>
 
-      {/* Side Menu */}
       <div className="div2">
-        <button onClick={toggleContent} className="toggle-button">
-          {showContent ? <X size={20} /> : <Menu size={20} />}
-        </button>
-
-        {showContent && (
-          <div className="hidden-content">
-            {renderSubMenu()}
-          </div>
+        {!hideToggleButton && (
+          <button onClick={toggleContent} className="toggle-button">
+            {showMainMenu ? <X size={20} /> : <Menu size={20} />}
+          </button>
         )}
+
+        <div className="div2-content-container">
+          <div className={`div2-background-content ${showMainMenu ? 'blurred' : ''}`}>
+            {renderDiv2Content()}
+          </div>
+
+          <div className={`hidden-content-overlay ${showMainMenu ? 'active' : ''}`}>
+            {renderMainMenu()}
+          </div>
+        </div>
       </div>
     </div>
   );
