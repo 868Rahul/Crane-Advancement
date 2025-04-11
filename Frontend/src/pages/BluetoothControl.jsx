@@ -14,7 +14,7 @@ function BluetoothControls() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:5000/api/bluetooth/send', {
+      const response = await fetch('https://crane-advancement-brgo.onrender.com/api/bluetooth/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ function BluetoothControls() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:5000/api/bluetooth/connect');
+      const response = await fetch('https://crane-advancement-brgo.onrender.com/api/bluetooth/connect');
       
       // First check if the response is OK
       if (!response.ok) {
