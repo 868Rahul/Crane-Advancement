@@ -739,3 +739,20 @@ button,
   color: #666;
   margin-left: 5px;
 }
+
+.overlay-content {
+  height: 100vh; /* or try max-height: 100% if needed */
+  overflow: auto; /* allows scrolling if content overflows */
+  display: flex;
+  flex-direction: column;
+}
+
+.overlay-image {
+  max-height: 100%;
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}

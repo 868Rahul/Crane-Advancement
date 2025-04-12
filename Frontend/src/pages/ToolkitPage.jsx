@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ToolkitPage.css';
 import { Menu, X, CornerUpLeft, ChevronLeft, ChevronDown, ChevronUp, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, RotateCw, RotateCcw } from 'lucide-react';
-import craneImage from '../assets/Crane.jpg';
+import craneImage from '../assets/3D-view.jpg';
+import jibAnalysisImage from '../assets/jib-analysis-panel.jpg';
 import { useNavigate } from 'react-router-dom';
 import BluetoothControls from './BluetoothControl.jsx';
 
@@ -411,8 +412,8 @@ function ToolkitPage() {
       case 'A':
         return (
           <div className="overlay-content">
-            <h3>3D View Content</h3>
-            <p>This would display your 3D visualization of the crane</p>
+            <h3>3D View</h3>
+            <img src={craneImage} alt="3D Crane View" className="overlay-image" />
           </div>
         );
       case 'B':
@@ -437,7 +438,7 @@ function ToolkitPage() {
         return (
           <div className="overlay-content">
             <h3>Jib Analysis</h3>
-            <p>Jib stress analysis and metrics would appear here</p>
+            <img src={jibAnalysisImage} alt="Jib Analysis" className="overlay-image" />
           </div>
         );
       case 'D':
@@ -452,7 +453,11 @@ function ToolkitPage() {
           </div>
         );
       default:
-        return <img src={craneImage} alt="crane" />;
+        return (
+          <div className="overlay-content">
+            <img src={craneImage} alt="crane" className="overlay-image" />
+          </div>
+        );
     }
   };
 
