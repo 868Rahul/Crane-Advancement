@@ -114,22 +114,40 @@ function ToolkitPage() {
   }, []);
 
   useEffect(() => {
+    const playVideo = async (videoElement, stream) => {
+      if (!videoElement || !stream) return;
+      
+      try {
+        // Ensure the video element has the stream
+        if (videoElement.srcObject !== stream) {
+          videoElement.srcObject = stream;
+        }
+        
+        // Check if already playing to avoid unnecessary play() calls
+        if (videoElement.paused) {
+          await videoElement.play().catch(err => {
+            if (err.name !== 'AbortError') {
+              console.error('Error playing video:', err);
+            }
+          });
+        }
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          console.error('Error with video element:', err);
+        }
+      }
+    };
+
     if (cameraVisibility && div2Content === 'camera') {
       Object.keys(cameraRefs).forEach(camera => {
         const videoElement = cameraRefs[camera].current;
-        if (videoElement && cameraStreams[camera] && !videoElement.srcObject) {
-          videoElement.srcObject = cameraStreams[camera];
-          videoElement.play().catch(err => console.error(`Error playing ${camera}:`, err));
-        }
+        playVideo(videoElement, cameraStreams[camera]);
       });
     }
 
     if (showInDiv1) {
       const videoElement = fullViewRefs[showInDiv1].current;
-      if (videoElement && cameraStreams[showInDiv1] && !videoElement.srcObject) {
-        videoElement.srcObject = cameraStreams[showInDiv1];
-        videoElement.play().catch(err => console.error(`Error playing full view ${showInDiv1}:`, err));
-      }
+      playVideo(videoElement, cameraStreams[showInDiv1]);
     }
   }, [cameraStreams, cameraVisibility, div2Content, showInDiv1]);
 
@@ -160,13 +178,6 @@ function ToolkitPage() {
     if (e) e.stopPropagation();
     setShowInDiv1(camera);
     setSelectedOverlayOption('B');
-    setTimeout(() => {
-      const videoElement = fullViewRefs[camera].current;
-      if (videoElement && cameraStreams[camera] && !videoElement.srcObject) {
-        videoElement.srcObject = cameraStreams[camera];
-        videoElement.play().catch(err => console.error(`Error playing full view ${camera}:`, err));
-      }
-    }, 0);
   };
 
   const toggleButtonDropdown = (menuName) => {
@@ -220,11 +231,40 @@ function ToolkitPage() {
 
     useEffect(() => {
       const videoElement = ref.current;
-      if (videoElement && cameraStreams[camera] && !videoElement.srcObject) {
-        videoElement.srcObject = cameraStreams[camera];
-        videoElement.play().catch(err => console.error(`Error playing ${camera}:`, err));
-      }
-    }, [cameraStreams[camera]]);
+      const stream = cameraStreams[camera];
+      
+      const playVideo = async () => {
+        if (!videoElement || !stream) return;
+        
+        try {
+          if (videoElement.srcObject !== stream) {
+            videoElement.srcObject = stream;
+          }
+          
+          if (videoElement.paused) {
+            await videoElement.play().catch(err => {
+              if (err.name !== 'AbortError') {
+                console.error(`Error playing ${camera}:`, err);
+              }
+            });
+          }
+        } catch (err) {
+          if (err.name !== 'AbortError') {
+            console.error(`Error with ${camera} video element:`, err);
+          }
+        }
+      };
+
+      playVideo();
+
+      return () => {
+        // Cleanup when component unmounts
+        if (videoElement) {
+          videoElement.pause();
+          videoElement.srcObject = null;
+        }
+      };
+    }, [cameraStreams[camera], camera]);
 
     return (
       <div className={`camera-box ${fullView ? 'full-view' : ''}`}>

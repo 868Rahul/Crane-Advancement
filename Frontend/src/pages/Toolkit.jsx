@@ -9,7 +9,7 @@ const Toolkit = () => {
     <section id="toolkit" className="toolkit-section">
       <div className="toolkit-container">
         <button className="toolkit-button" onClick={() => navigate("/ToolkitPage")}>
-        <i class="fa-solid fa-toolbox"></i> Toolkit
+        <i className="fa-solid fa-toolbox"></i> Toolkit
         </button>
       </div>
     </section>
